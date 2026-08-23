@@ -1,0 +1,19 @@
+{% extends 'placements/base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="ps-card">
+        <h4 class="mb-1">Update Application</h4>
+        <p class="text-muted mb-3" style="font-size:0.9rem;">
+            {{ application.student.user.get_full_name|default:application.student.user.username }} — {{ application.company.name }}
+        </p>
+        <form method="post" class="ps-form">
+          {% csrf_token %}
+          {{ form.as_p }}
+          <button class="btn-ps btn-ps-teal w-100 mt-3" type="submit">Save &amp; Notify Student</button>
+        </form>
+        <a href="{% url 'company_dashboard' %}" class="d-block text-center mt-3" style="font-size:0.88rem;">← Back to applicants</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

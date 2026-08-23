@@ -1,0 +1,48 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Smart Placement{% endblock %}</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="{% static 'placements/css/theme.css' %}" rel="stylesheet">
+</head>
+<body>
+<div class="top-strip"></div>
+
+{% if user.is_authenticated %}
+<nav class="ps-navbar">
+    <div class="container d-flex justify-content-between align-items-center">
+        <a class="brand" href="{% url 'dashboard' %}">
+            <span class="mark">SP</span> Smart Placement
+        </a>
+                   <div class="d-flex align-items-center gap-2">
+                <button type="button" class="theme-toggle" onclick="togglePsTheme()" aria-label="Toggle dark mode">
+                    <span class="theme-toggle-icon">🌙</span>
+                </button>
+                <span class="username">{{ user.get_full_name|default:user.username }}</span>
+                {% if user.company_profile %}
+                    <a href="{% url 'company_dashboard' %}" class="btn-ps btn-ps-outline btn-ps-sm me-2">My Applicants</a>
+                {% else %}
+                    <a href="{% url 'complete_profile' %}" class="btn-ps btn-ps-outline btn-ps-sm me-2">Profile</a>
+                {% endif %}
+                <a href="{% url 'logout' %}" class="btn-ps btn-ps-outline btn-ps-sm">Logout</a>
+            </div>
+    </div>
+</nav>
+{% endif %}
+
+<div class="container py-4">
+    {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
+</div>
+<script src="{% static 'placements/js/theme.js' %}"></script>
+</body>
+</html>

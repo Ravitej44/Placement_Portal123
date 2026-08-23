@@ -1,0 +1,58 @@
+{% extends 'placements/base.html' %}
+{% block content %}
+
+<div class="ps-card mb-4">
+    <h4 class="mb-1">{{ company.name }}</h4>
+    <p class="text-muted mb-0" style="font-size:0.9rem;">
+        {{ company.job_role }} &nbsp;•&nbsp; Drive: {{ company.drive_date }} &nbsp;•&nbsp; Deadline: {{ company.application_deadline }}
+    </p>
+</div>
+
+<div class="d-flex flex-column gap-3">
+  {% for app in applications %}
+  <div class="ps-card py-3">
+    <div class="row align-items-center">
+        <div class="col-md-3 d-flex align-items-center gap-2">
+            <div style="width:38px;height:38px;border-radius:50%;background:var(--blue-light);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;">
+                {{ app.student.user.first_name|slice:":1"|upper }}{{ app.student.user.last_name|slice:":1"|upper }}
+            </div>
+            <div>
+                <strong>{{ app.student.user.get_full_name|default:app.student.user.username }}</strong>
+                <div class="text-muted" style="font-size:0.78rem;">{{ app.student.get_branch_display }} • CGPA {{ app.student.cgpa }}</div>
+            </div>
+        </div>
+        <div class="col-md-3" style="font-size:0.82rem;">
+            <span class="text-muted">Skills:</span> {{ app.student.skills|default:"—" }}<br>
+            {% if app.student.resume %}
+                <a href="{{ app.student.resume.url }}" target="_blank">View Resume</a>
+            {% else %}
+                <span class="text-muted">No resume uploaded</span>
+            {% endif %}
+        </div>
+        <div class="col-md-3">
+            {% if app.status == 'REJECTED' %}
+                <span class="status-pill rejected">Rejected</span>
+            {% elif app.status == 'SELECTED' %}
+                <span class="status-pill selected">Selected</span>
+            {% elif app.status == 'INTERVIEW' %}
+                <span class="status-pill interview">Interview</span>
+                {% if app.has_interview_scheduled %}
+                <div class="text-muted mt-1" style="font-size:0.78rem;">{{ app.interview_datetime|date:"d M, h:i A" }}</div>
+                {% endif %}
+            {% elif app.status == 'SHORTLISTED' %}
+                <span class="status-pill shortlisted">Shortlisted</span>
+            {% else %}
+                <span class="status-pill applied">Applied</span>
+            {% endif %}
+        </div>
+        <div class="col-md-3 text-md-end mt-2 mt-md-0">
+            <a href="{% url 'company_update_application' app.id %}" class="btn-ps btn-ps-navy btn-ps-sm">Update Status</a>
+        </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="empty-state">No applicants yet — eligible students will show up here once they apply.</div>
+  {% endfor %}
+</div>
+
+{% endblock %}

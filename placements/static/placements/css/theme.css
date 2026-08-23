@@ -1,0 +1,340 @@
+/* ===== Design tokens ===== */
+:root {
+    --navy: #0D1B3E;
+    --navy-light: #16295C;
+    --teal: #16A085;
+    --teal-light: #E1F5EE;
+    --orange: #F39C12;
+    --orange-light: #FDF0DC;
+    --purple: #7C5CBF;
+    --purple-light: #EFEAFA;
+    --blue: #4F5BD5;
+    --blue-light: #EAEBFB;
+    --success: #0B8457;
+    --success-light: #E1F3EA;
+    --danger: #E15554;
+    --danger-light: #FCEAEA;
+    --bg: #F5F7FB;
+    --card: #FFFFFF;
+    --text: #1A2332;
+    --muted: #64748B;
+    --border-c: #E7EAF3;
+    --heading: #0D1B3E;
+    --radius-card: 16px;
+    --radius-pill: 999px;
+    --shadow-card: 0 2px 10px rgba(13, 27, 62, 0.06);
+
+    --pill-text-teal: #0c6650;
+    --pill-text-orange: #9a6208;
+    --pill-text-blue: #3339a3;
+    --pill-text-purple: #543d8c;
+    --pill-text-success: #085f3f;
+    --pill-text-danger: #a13736;
+
+    color-scheme: light;
+}
+
+/* ===== Dark theme ===== */
+[data-theme="dark"] {
+    --bg: #0B1220;
+    --card: #141B2E;
+    --text: #E7EAF3;
+    --muted: #93A0B8;
+    --border-c: #232D45;
+    --heading: #EDEFF7;
+    --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.4);
+
+    --teal-light: rgba(22, 160, 133, 0.18);
+    --orange-light: rgba(243, 156, 18, 0.18);
+    --purple-light: rgba(124, 92, 191, 0.20);
+    --blue-light: rgba(79, 91, 213, 0.22);
+    --success-light: rgba(11, 132, 87, 0.22);
+    --danger-light: rgba(225, 85, 84, 0.20);
+
+    --pill-text-teal: #5eead4;
+    --pill-text-orange: #fbbf24;
+    --pill-text-blue: #a5b4fc;
+    --pill-text-purple: #c4b5fd;
+    --pill-text-success: #6ee7b7;
+    --pill-text-danger: #fca5a5;
+
+    color-scheme: dark;
+}
+
+/* ===== Base ===== */
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, sans-serif;
+    font-size: 15px;
+}
+
+h1, h2, h3, h4, h5, .brand-font {
+    font-family: 'Sora', 'Inter', sans-serif;
+    font-weight: 700;
+    color: var(--heading);
+    letter-spacing: -0.02em;
+}
+
+a { color: var(--teal); text-decoration: none; }
+a:hover { color: var(--navy); }
+
+/* ===== Top signature strip (echoes the PPT's top bar) ===== */
+.top-strip {
+    height: 5px;
+    width: 100%;
+    background: linear-gradient(90deg, var(--navy) 0%, var(--teal) 50%, var(--orange) 100%);
+}
+
+/* ===== Navbar ===== */
+.ps-navbar {
+    background: var(--navy);
+    padding: 14px 0;
+}
+
+.ps-navbar .brand {
+    font-family: 'Sora', sans-serif;
+    font-weight: 700;
+    font-size: 1.15rem;
+    color: #fff;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ps-navbar .brand .mark {
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    background: linear-gradient(135deg, var(--teal), var(--orange));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--navy);
+}
+
+.ps-navbar .username {
+    color: rgba(255,255,255,0.85);
+    font-size: 0.9rem;
+    margin-right: 14px;
+}
+
+/* ===== Buttons ===== */
+.btn-ps {
+    border-radius: var(--radius-pill);
+    padding: 8px 20px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    border: none;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+    display: inline-block;
+}
+.btn-ps:hover { transform: translateY(-1px); }
+
+.btn-ps-navy { background: var(--navy); color: #fff; }
+.btn-ps-navy:hover { background: var(--navy-light); color: #fff; }
+
+.btn-ps-teal { background: var(--teal); color: #fff; }
+.btn-ps-teal:hover { background: #128a70; color: #fff; }
+
+.btn-ps-outline {
+    background: transparent;
+    border: 1.5px solid rgba(255,255,255,0.5);
+    color: #fff;
+}
+.btn-ps-outline:hover { background: rgba(255,255,255,0.12); color: #fff; }
+
+.btn-ps-disabled {
+    background: #EDF0F7;
+    color: var(--muted);
+    cursor: not-allowed;
+}
+
+.btn-ps-sm { padding: 6px 16px; font-size: 0.82rem; }
+
+/* ===== Cards ===== */
+.ps-card {
+    background: var(--card);
+    border-radius: var(--radius-card);
+    box-shadow: var(--shadow-card);
+    border: 1px solid var(--border-c);
+    padding: 24px;
+}
+
+.company-card {
+    background: var(--card);
+    border-radius: 14px;
+    box-shadow: var(--shadow-card);
+    border-left: 4px solid var(--teal);
+    padding: 20px 22px;
+    height: 100%;
+}
+.company-card.not-eligible { border-left-color: var(--orange); }
+
+.company-card h5 { margin-bottom: 2px; }
+.company-card .role { color: var(--muted); font-size: 0.88rem; }
+.company-card .meta { font-size: 0.85rem; color: var(--muted); margin: 10px 0; }
+
+/* ===== Status pill ===== */
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 14px;
+    border-radius: var(--radius-pill);
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+.status-pill.eligible { background: var(--teal-light); color: var(--pill-text-teal); }
+.status-pill.not-eligible { background: var(--orange-light); color: var(--pill-text-orange); }
+.status-pill.applied { background: var(--blue-light); color: var(--pill-text-blue); }
+.status-pill.shortlisted { background: var(--teal-light); color: var(--pill-text-teal); }
+.status-pill.interview { background: var(--purple-light); color: var(--pill-text-purple); }
+.status-pill.selected { background: var(--success-light); color: var(--pill-text-success); }
+.status-pill.rejected { background: var(--danger-light); color: var(--pill-text-danger); }
+
+/* ===== Pipeline stepper (signature element) ===== */
+.stepper { display: flex; align-items: center; margin: 10px 0; }
+.stepper .node {
+    width: 26px; height: 26px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.68rem; font-weight: 700; color: #fff;
+    background: #D9DEEB; flex-shrink: 0;
+}
+.stepper .node.done.applied { background: var(--blue); }
+.stepper .node.done.shortlisted { background: var(--teal); }
+.stepper .node.done.interview { background: var(--purple); }
+.stepper .node.done.selected { background: var(--success); }
+.stepper .node.rejected { background: var(--danger); }
+.stepper .line { flex: 1; height: 3px; background: #D9DEEB; margin: 0 3px; min-width: 14px; }
+.stepper .line.done { background: var(--teal); }
+.stepper .label { font-size: 0.62rem; color: var(--muted); text-align: center; width: 60px; margin-top: 4px; }
+.stepper-wrap { display: flex; flex-direction: column; }
+.stepper-labels { display: flex; }
+
+/* ===== Stat chips ===== */
+.stat-chip {
+    background: var(--card);
+    border: 1px solid var(--border-c);
+    border-radius: 14px;
+    padding: 14px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+.stat-chip .value { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 1.3rem; color: var(--heading); }
+.stat-chip .label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+
+/* ===== Tables ===== */
+.ps-table {
+    background: var(--card);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+}
+.ps-table thead { background: var(--navy); }
+.ps-table thead th { color: #fff; font-weight: 600; font-size: 0.82rem; border: none; padding: 14px 16px; }
+.ps-table tbody td { padding: 14px 16px; vertical-align: middle; border-color: var(--border-c); font-size: 0.9rem; }
+
+/* ===== Forms ===== */
+.ps-form input, .ps-form select, .ps-form textarea {
+    border-radius: 10px !important;
+    border: 1.5px solid var(--border-c) !important;
+    padding: 10px 14px !important;
+    font-size: 0.92rem !important;
+}
+.ps-form input:focus, .ps-form select:focus, .ps-form textarea:focus {
+    border-color: var(--teal) !important;
+    box-shadow: 0 0 0 3px rgba(22,160,133,0.15) !important;
+}
+.ps-form label { font-weight: 600; font-size: 0.85rem; color: var(--heading); margin-top: 10px; display: block; }
+
+.text-muted { color: var(--muted) !important; }
+
+/* ===== Auth split screen ===== */
+.auth-wrap { min-height: 100vh; display: flex; }
+.auth-side {
+    background: var(--navy);
+    color: #fff;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 60px;
+    position: relative;
+    overflow: hidden;
+}
+.auth-side .blob {
+    position: absolute; border-radius: 50%; opacity: 0.85;
+}
+.auth-side .blob.b1 { width: 220px; height: 220px; background: var(--teal); top: -60px; right: -60px; opacity: 0.25; }
+.auth-side .blob.b2 { width: 160px; height: 160px; background: var(--orange); bottom: -40px; right: 60px; opacity: 0.2; }
+.auth-side .brand { font-family: 'Sora', sans-serif; font-weight: 700; font-size: 2rem; margin-bottom: 12px; position: relative; z-index: 1; }
+.auth-side .tagline { color: rgba(255,255,255,0.75); font-size: 1.05rem; max-width: 380px; position: relative; z-index: 1; }
+.auth-form-side {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+}
+.auth-form-side .ps-card { width: 100%; max-width: 400px; }
+
+@media (max-width: 768px) {
+    .auth-side { display: none; }
+}
+
+/* ===== Alerts ===== */
+.alert { border-radius: 12px; border: none; font-size: 0.9rem; }
+.alert-success { background: var(--teal-light); color: #0c6650; }
+.alert-error, .alert-danger { background: var(--danger-light); color: #a13736; }
+
+/* ===== Empty state ===== */
+.empty-state { text-align: center; padding: 40px 20px; color: var(--muted); }
+
+/* ===== Theme toggle ===== */
+.theme-toggle {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.08);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+.theme-toggle:hover { background: rgba(255,255,255,0.18); }
+
+.theme-toggle-floating {
+    position: fixed;
+    top: 16px;
+    right: 16px;
+    z-index: 50;
+    background: var(--navy);
+}
+
+/* ===== Dark mode fine-tuning ===== */
+[data-theme="dark"] .ps-form input,
+[data-theme="dark"] .ps-form select,
+[data-theme="dark"] .ps-form textarea {
+    background: var(--bg) !important;
+    color: var(--text) !important;
+}
+[data-theme="dark"] .company-card,
+[data-theme="dark"] .ps-card,
+[data-theme="dark"] .ps-table,
+[data-theme="dark"] .stat-chip {
+    border-color: var(--border-c);
+}
+[data-theme="dark"] .btn-ps-disabled {
+    background: #1E2A45;
+    color: var(--muted);
+}

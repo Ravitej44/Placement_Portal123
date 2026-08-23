@@ -1,0 +1,113 @@
+{% extends 'placements/base.html' %}
+{% block content %}
+
+<div class="d-flex gap-3 flex-wrap mb-4">
+    <div class="stat-chip">
+        <span class="value">{{ student.get_branch_display }}</span>
+        <span class="label">Branch</span>
+    </div>
+    <div class="stat-chip">
+        <span class="value">{{ student.cgpa }}</span>
+        <span class="label">CGPA</span>
+    </div>
+    <div class="stat-chip">
+        <span class="value">{{ student.backlogs }}</span>
+        <span class="label">Backlogs</span>
+    </div>
+    <div class="stat-chip">
+        <span class="value">{{ applications.count }}</span>
+        <span class="label">Applications</span>
+    </div>
+</div>
+
+<h4 class="mb-3">Available Drives</h4>
+<div class="row g-3 mb-5">
+  {% for item in companies %}
+  <div class="col-md-6">
+    <div class="company-card {% if not item.eligible %}not-eligible{% endif %}">
+        <div class="d-flex justify-content-between align-items-start">
+            <div>
+                <h5>{{ item.company.name }}</h5>
+                <div class="role">{{ item.company.job_role }}</div>
+            </div>
+            {% if item.eligible %}
+                <span class="status-pill eligible">Eligible</span>
+            {% else %}
+                <span class="status-pill not-eligible">Not Eligible</span>
+            {% endif %}
+        </div>
+
+        <div class="meta">
+            <strong>{{ item.company.package_lpa }} LPA</strong> &nbsp;•&nbsp;
+            Drive: {{ item.company.drive_date }} &nbsp;•&nbsp;
+            Apply by {{ item.company.application_deadline }}
+        </div>
+
+        {% if not item.eligible %}
+        <ul class="small text-muted mb-3" style="font-size:0.8rem;">
+            {% for reason in item.reasons %}<li>{{ reason }}</li>{% endfor %}
+        </ul>
+        {% endif %}
+
+        {% if item.already_applied %}
+          <button class="btn-ps btn-ps-disabled w-100" disabled>Already Applied</button>
+        {% elif item.eligible %}
+          <a href="{% url 'apply' item.company.id %}" class="btn-ps btn-ps-teal w-100 text-center d-block">Apply Now</a>
+        {% else %}
+          <button class="btn-ps btn-ps-disabled w-100" disabled>Not Eligible</button>
+        {% endif %}
+    </div>
+  </div>
+  {% empty %}
+  <div class="col-12"><div class="empty-state">No drives posted yet — check back soon.</div></div>
+  {% endfor %}
+</div>
+
+<h4 class="mb-3">My Applications</h4>
+<div class="d-flex flex-column gap-3">
+  {% for app in applications %}
+  <div class="ps-card py-3">
+    <div class="row align-items-center">
+        <div class="col-md-3">
+            <strong>{{ app.company.name }}</strong>
+            <div class="text-muted" style="font-size:0.82rem;">{{ app.company.job_role }}</div>
+        </div>
+        <div class="col-md-6">
+            <div class="stepper-wrap">
+                {% if app.status == 'REJECTED' %}
+                    <span class="status-pill rejected">Rejected</span>
+                {% else %}
+                <div class="stepper">
+                    <div class="node done applied">1</div>
+                    <div class="line {% if app.status == 'SHORTLISTED' or app.status == 'INTERVIEW' or app.status == 'SELECTED' %}done{% endif %}"></div>
+                    <div class="node {% if app.status == 'SHORTLISTED' or app.status == 'INTERVIEW' or app.status == 'SELECTED' %}done shortlisted{% endif %}">2</div>
+                    <div class="line {% if app.status == 'INTERVIEW' or app.status == 'SELECTED' %}done{% endif %}"></div>
+                    <div class="node {% if app.status == 'INTERVIEW' or app.status == 'SELECTED' %}done interview{% endif %}">3</div>
+                    <div class="line {% if app.status == 'SELECTED' %}done{% endif %}"></div>
+                    <div class="node {% if app.status == 'SELECTED' %}done selected{% endif %}">4</div>
+                </div>
+                <div class="stepper-labels">
+                    <span class="label">Applied</span>
+                    <span class="label">Shortlisted</span>
+                    <span class="label">Interview</span>
+                    <span class="label">Selected</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-3 text-md-end mt-3 mt-md-0">
+            {% if app.has_interview_scheduled %}
+                <div style="font-size:0.82rem;">
+                    <strong>{{ app.interview_datetime|date:"d M, h:i A" }}</strong><br>
+                    <span class="text-muted">{{ app.get_interview_mode_display }}</span>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+  </div>
+  {% empty %}
+  <div class="empty-state">You haven't applied anywhere yet — eligible drives are listed above.</div>
+  {% endfor %}
+</div>
+
+{% endblock %}

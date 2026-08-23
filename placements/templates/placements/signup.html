@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sign Up — Smart Placement</title>
+    {% include 'placements/_theme_prevent_flash.html' %}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="{% static 'placements/css/theme.css' %}" rel="stylesheet">
+</head>
+<body>
+<div class="top-strip"></div>
+<button type="button" class="theme-toggle theme-toggle-floating" onclick="togglePsTheme()" aria-label="Toggle dark mode">
+    <span class="theme-toggle-icon">🌙</span>
+</button>
+<div class="auth-wrap">
+    <div class="auth-side">
+        <div class="blob b1"></div>
+        <div class="blob b2"></div>
+        <div class="brand">🎓 Smart Placement</div>
+        <p class="tagline">Create your student profile once — see every drive you're eligible for, apply in a click, and track your journey to placement.</p>
+    </div>
+    <div class="auth-form-side">
+        <div class="ps-card">
+            <h3 class="mb-1">Create your account</h3>
+            <p class="text-muted mb-3" style="font-size:0.9rem;">Takes less than a minute</p>
+            <form method="post" class="ps-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn-ps btn-ps-teal w-100 mt-2" type="submit">Create Account</button>
+            </form>
+            <p class="mt-3 text-center" style="font-size:0.88rem;">Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+        </div>
+    </div>
+</div>
+<script src="{% static 'placements/js/theme.js' %}"></script>
+</body>
+</html>
