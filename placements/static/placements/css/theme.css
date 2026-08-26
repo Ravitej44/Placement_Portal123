@@ -338,3 +338,67 @@ a:hover { color: var(--navy); }
     background: #1E2A45;
     color: var(--muted);
 }
+/* ==========================================
+   GLOBAL MOBILE RESPONSIVE STYLES
+   ========================================== */
+
+/* 1. Prevent Horizontal Scrolling */
+body {
+    overflow-x: hidden;
+}
+
+/* 2. Responsive Cards & Containers */
+.ps-card, .company-card {
+    padding: 1rem !important;
+    margin-bottom: 1rem;
+}
+
+/* 3. Stat Chips (Dashboard Top Bar) */
+@media (max-width: 575.98px) {
+    .stat-chip {
+        flex: 1 1 calc(50% - 0.75rem); /* 2 chips per row on phone screens */
+        min-width: 120px;
+    }
+
+    /* Full-width buttons on mobile */
+    .btn-ps, button[type="submit"] {
+        width: 100% !important;
+    }
+}
+
+/* 4. Responsive Tables (Company Dashboard / Admin Views) */
+.table-responsive-custom {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* 5. Navigation Bar Adjustments */
+@media (max-width: 767.98px) {
+    .navbar {
+        padding: 0.75rem 1rem;
+    }
+    
+    .navbar-nav {
+        gap: 0.5rem;
+        padding-top: 0.75rem;
+    }
+}
+/* ... all your existing theme.css code ... */
+
+
+/* ==========================================
+   ADDED STEP 3: Responsive Form Inputs
+   ========================================== */
+.ps-form input[type="text"],
+.ps-form input[type="email"],
+.ps-form input[type="password"],
+.ps-form input[type="number"],
+.ps-form input[type="file"],
+.ps-form select,
+.ps-form textarea {
+    width: 100% !important;
+    max-width: 100%;
+    box-sizing: border-box;
+    font-size: 16px; /* Prevents auto-zoom on mobile Safari */
+}
