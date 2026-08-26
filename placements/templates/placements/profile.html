@@ -5,6 +5,24 @@
     <div class="ps-card">
         <h4 class="mb-1">My Profile</h4>
         <p class="text-muted mb-3" style="font-size:0.9rem;">Keep this accurate — it's what drives are matched against.</p>
+        
+        <!-- Profile Progress Bar -->
+        <div class="mb-4">
+            <div class="d-flex justify-content-between align-items-center mb-1">
+                <small class="fw-bold">Profile Completion</small>
+                <small class="fw-bold text-muted">{{ progress }}%</small>
+            </div>
+            <div class="progress" style="height: 12px; border-radius: 6px; background-color: #e9ecef;">
+                <div class="progress-bar bg-success" 
+                     role="progressbar" 
+                     style="width: {{ progress }}%; border-radius: 6px;" 
+                     aria-valuenow="{{ progress }}" 
+                     aria-valuemin="0" 
+                     aria-valuemax="100">
+                </div>
+            </div>
+        </div>
+
         <form method="post" enctype="multipart/form-data" class="ps-form">
           {% csrf_token %}
           {{ form.as_p }}

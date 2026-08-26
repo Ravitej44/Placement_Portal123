@@ -43,7 +43,12 @@ def complete_profile_view(request):
             return redirect('dashboard')
     else:
         form = StudentProfileForm(instance=student)
-    return render(request, 'placements/profile.html', {'form': form})
+        progress = student.get_completion_percentage()
+    return render(request, 'placements/profile.html', {
+        'form': form,
+        'student': student,
+        'progress': progress
+    })
 
 
 @login_required

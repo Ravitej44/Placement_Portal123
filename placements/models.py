@@ -30,6 +30,21 @@ class Student(models.Model):
     def skills_list(self):
         return [s.strip() for s in self.skills.split(',') if s.strip()]
 
+    def get_completion_percentage(self):
+        fields_to_check = [
+            self.branch,
+            self.cgpa,
+            self.skills,
+            self.phone,
+            self.resume,
+        ]
+        
+        # Count how many of these fields have data filled in
+        completed = sum(1 for field in fields_to_check if field)
+        total = len(fields_to_check)
+        
+        return int((completed / total) * 100) if total > 0 else 0
+
 
 class Company(models.Model):
     user = models.OneToOneField(

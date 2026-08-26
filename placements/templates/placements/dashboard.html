@@ -1,6 +1,84 @@
 {% extends 'placements/base.html' %}
 {% block content %}
 
+<style>
+  /* Single Stepper Styling */
+  .stepper-wrap {
+    width: 100%;
+    padding: 10px 0 0 0;
+  }
+
+  .stepper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    margin-bottom: 8px;
+    width: 100%;
+  }
+
+  .stepper .node {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #e9ecef;
+    color: #6c757d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 700;
+    z-index: 2;
+    flex-shrink: 0;
+  }
+
+  .stepper .node.done {
+    background-color: #0d6efd;
+    color: #ffffff;
+  }
+
+  .stepper .node.done.selected {
+    background-color: #198754;
+  }
+
+  .stepper .line {
+    flex-grow: 1;
+    height: 4px;
+    background-color: #e9ecef;
+    margin: 0 -2px;
+    z-index: 1;
+  }
+
+  .stepper .line.done {
+    background-color: #0d6efd;
+  }
+
+  /* Centering Labels under the Node Circles */
+  .stepper-labels {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .stepper-labels .step-label {
+    width: 80px;
+    text-align: center;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #6c757d;
+    margin-left: -24px;
+    margin-right: -24px;
+  }
+
+  .stepper-labels .step-label:first-child {
+    margin-left: -24px;
+  }
+
+  .stepper-labels .step-label:last-child {
+    margin-right: -24px;
+  }
+</style>
+
 <div class="d-flex gap-3 flex-wrap mb-4">
     <div class="stat-chip">
         <span class="value">{{ student.get_branch_display }}</span>
@@ -67,42 +145,41 @@
 <div class="d-flex flex-column gap-3">
   {% for app in applications %}
   <div class="ps-card py-3">
-    <div class="row align-items-center">
-        <div class="col-md-3">
-            <strong>{{ app.company.name }}</strong>
-            <div class="text-muted" style="font-size:0.82rem;">{{ app.company.job_role }}</div>
+    <!-- Top Row: Company Name & Interview Badge -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <strong class="fs-5">{{ app.company.name }}</strong>
+            <span class="text-muted ms-2" style="font-size:0.88rem;">• {{ app.company.job_role }}</span>
         </div>
-        <div class="col-md-6">
-            <div class="stepper-wrap">
-                {% if app.status == 'REJECTED' %}
-                    <span class="status-pill rejected">Rejected</span>
-                {% else %}
-                <div class="stepper">
-                    <div class="node done applied">1</div>
-                    <div class="line {% if app.status == 'SHORTLISTED' or app.status == 'INTERVIEW' or app.status == 'SELECTED' %}done{% endif %}"></div>
-                    <div class="node {% if app.status == 'SHORTLISTED' or app.status == 'INTERVIEW' or app.status == 'SELECTED' %}done shortlisted{% endif %}">2</div>
-                    <div class="line {% if app.status == 'INTERVIEW' or app.status == 'SELECTED' %}done{% endif %}"></div>
-                    <div class="node {% if app.status == 'INTERVIEW' or app.status == 'SELECTED' %}done interview{% endif %}">3</div>
-                    <div class="line {% if app.status == 'SELECTED' %}done{% endif %}"></div>
-                    <div class="node {% if app.status == 'SELECTED' %}done selected{% endif %}">4</div>
-                </div>
-                <div class="stepper-labels">
-                    <span class="label">Applied</span>
-                    <span class="label">Shortlisted</span>
-                    <span class="label">Interview</span>
-                    <span class="label">Selected</span>
-                </div>
-                {% endif %}
+        {% if app.has_interview_scheduled %}
+            <div style="font-size:0.82rem;" class="text-end">
+                <strong>{{ app.interview_datetime|date:"d M, h:i A" }}</strong><br>
+                <span class="text-muted">{{ app.get_interview_mode_display }}</span>
             </div>
+        {% endif %}
+    </div>
+
+    <!-- Bottom Row: Full-width Stepper -->
+    <div class="stepper-wrap px-3">
+        {% if app.status == 'REJECTED' %}
+            <span class="status-pill rejected">Rejected</span>
+        {% else %}
+        <div class="stepper">
+            <div class="node done applied">1</div>
+            <div class="line {% if app.status == 'SHORTLISTED' or app.status == 'INTERVIEW' or app.status == 'SELECTED' %}done{% endif %}"></div>
+            <div class="node {% if app.status == 'SHORTLISTED' or app.status == 'INTERVIEW' or app.status == 'SELECTED' %}done shortlisted{% endif %}">2</div>
+            <div class="line {% if app.status == 'INTERVIEW' or app.status == 'SELECTED' %}done{% endif %}"></div>
+            <div class="node {% if app.status == 'INTERVIEW' or app.status == 'SELECTED' %}done interview{% endif %}">3</div>
+            <div class="line {% if app.status == 'SELECTED' %}done{% endif %}"></div>
+            <div class="node {% if app.status == 'SELECTED' %}done selected{% endif %}">4</div>
         </div>
-        <div class="col-md-3 text-md-end mt-3 mt-md-0">
-            {% if app.has_interview_scheduled %}
-                <div style="font-size:0.82rem;">
-                    <strong>{{ app.interview_datetime|date:"d M, h:i A" }}</strong><br>
-                    <span class="text-muted">{{ app.get_interview_mode_display }}</span>
-                </div>
-            {% endif %}
+        <div class="stepper-labels">
+            <div class="step-label">Applied</div>
+            <div class="step-label">Shortlisted</div>
+            <div class="step-label">Interview</div>
+            <div class="step-label">Selected</div>
         </div>
+        {% endif %}
     </div>
   </div>
   {% empty %}
