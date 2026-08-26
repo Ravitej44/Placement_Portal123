@@ -2,7 +2,7 @@
 {% block content %}
 
 <style>
-  /* Single Stepper Styling */
+  /* Base Desktop Stepper Styling */
   .stepper-wrap {
     width: 100%;
     padding: 10px 0 0 0;
@@ -21,8 +21,8 @@
     width: 32px;
     height: 32px;
     border-radius: 50%;
-    background-color: #e9ecef;
-    color: #6c757d;
+    background-color: #e9ecef !important;
+    color: #6c757d !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -32,25 +32,26 @@
     flex-shrink: 0;
   }
 
+  /* Force active blue color for nodes and lines */
   .stepper .node.done {
-    background-color: #0d6efd;
-    color: #ffffff;
+    background-color: #0d6efd !important;
+    color: #ffffff !important;
   }
 
   .stepper .node.done.selected {
-    background-color: #198754;
+    background-color: #198754 !important;
   }
 
   .stepper .line {
     flex-grow: 1;
     height: 4px;
-    background-color: #e9ecef;
+    background-color: #e9ecef !important;
     margin: 0 -2px;
     z-index: 1;
   }
 
   .stepper .line.done {
-    background-color: #0d6efd;
+    background-color: #0d6efd !important;
   }
 
   /* Centering Labels under the Node Circles */
@@ -76,6 +77,39 @@
 
   .stepper-labels .step-label:last-child {
     margin-right: -24px;
+  }
+
+  /* --- MOBILE RESPONSIVE STYLES --- */
+  @media (max-width: 575.98px) {
+    .stepper-wrap {
+      overflow-x: auto;
+      padding-bottom: 5px;
+    }
+
+    .stepper .node {
+      width: 26px !important;
+      height: 26px !important;
+      font-size: 0.75rem;
+    }
+
+    .stepper .line {
+      height: 3px !important;
+    }
+
+    .stepper-labels .step-label {
+      width: 65px;
+      font-size: 0.7rem;
+      margin-left: -19px;
+      margin-right: -19px;
+    }
+
+    .stepper-labels .step-label:first-child {
+      margin-left: -19px;
+    }
+
+    .stepper-labels .step-label:last-child {
+      margin-right: -19px;
+    }
   }
 </style>
 
@@ -145,16 +179,16 @@
 <div class="d-flex flex-column gap-3">
   {% for app in applications %}
   <div class="ps-card py-3">
-    <!-- Top Row: Company Name & Detailed Interview/Venue Display -->
-    <div class="d-flex justify-content-between align-items-start mb-3">
+    <!-- Top Row: Company Info & Interview Schedule/Location Box -->
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center mb-3 gap-2">
         <div>
             <strong class="fs-5">{{ app.company.name }}</strong>
-            <span class="text-muted ms-2" style="font-size:0.88rem;">• {{ app.company.job_role }}</span>
+            <span class="text-muted ms-sm-2 d-block d-sm-inline" style="font-size:0.88rem;">• {{ app.company.job_role }}</span>
         </div>
         
-        <!-- FIX: Renders Date, Time, Mode, and Venue/Link -->
+        <!-- Interview Details & Venue -->
         {% if app.has_interview_scheduled %}
-            <div style="font-size:0.82rem;" class="text-end bg-light p-2 rounded border">
+            <div style="font-size:0.82rem;" class="text-start text-sm-end bg-light p-2 rounded border">
                 <div><strong>Interview:</strong> {{ app.interview_datetime|date:"d M, h:i A" }}</div>
                 <div class="text-muted">{{ app.get_interview_mode_display }}</div>
                 {% if app.interview_location %}
@@ -171,15 +205,15 @@
         {% endif %}
     </div>
 
-    <!-- Notification Message from Company (Remarks) -->
+    <!-- Notification Remarks Box from Company -->
     {% if app.remarks %}
         <div class="alert alert-info py-2 px-3 mb-3" style="font-size: 0.85rem; border-left: 4px solid #0dcaf0;">
             <strong>Notification:</strong> {{ app.remarks }}
         </div>
     {% endif %}
 
-    <!-- Bottom Row: Stepper Tracker -->
-    <div class="stepper-wrap px-3">
+    <!-- Bottom Row: Stepper Progress Bar -->
+    <div class="stepper-wrap px-1 px-sm-3">
         {% if app.status == 'REJECTED' %}
             <span class="status-pill rejected">Rejected</span>
         {% else %}

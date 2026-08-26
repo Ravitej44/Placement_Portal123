@@ -35,3 +35,16 @@ class ApplicationUpdateForm(forms.ModelForm):
                 attrs={'placeholder': 'Room 204, or https://meet.google.com/...'}
             ),
         }
+
+    def save(self, commit=True):
+        application = super().save(commit=False)
+        
+        # AUTOMATIC STEPPER FIX:
+        # If an interview datetime or location is entered, automatically move status to INTERVIEW
+        if application.interview_datetime or application.interview_location:
+            if application.status in ['APPLIED', 'SHORTLISTED']:
+                application.status = 'INTERVIEW'
+                
+        if commit:
+            application.save()
+        return application
