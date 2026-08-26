@@ -145,21 +145,40 @@
 <div class="d-flex flex-column gap-3">
   {% for app in applications %}
   <div class="ps-card py-3">
-    <!-- Top Row: Company Name & Interview Badge -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
+    <!-- Top Row: Company Name & Detailed Interview/Venue Display -->
+    <div class="d-flex justify-content-between align-items-start mb-3">
         <div>
             <strong class="fs-5">{{ app.company.name }}</strong>
             <span class="text-muted ms-2" style="font-size:0.88rem;">• {{ app.company.job_role }}</span>
         </div>
+        
+        <!-- FIX: Renders Date, Time, Mode, and Venue/Link -->
         {% if app.has_interview_scheduled %}
-            <div style="font-size:0.82rem;" class="text-end">
-                <strong>{{ app.interview_datetime|date:"d M, h:i A" }}</strong><br>
-                <span class="text-muted">{{ app.get_interview_mode_display }}</span>
+            <div style="font-size:0.82rem;" class="text-end bg-light p-2 rounded border">
+                <div><strong>Interview:</strong> {{ app.interview_datetime|date:"d M, h:i A" }}</div>
+                <div class="text-muted">{{ app.get_interview_mode_display }}</div>
+                {% if app.interview_location %}
+                    <div class="mt-1">
+                        <strong>Location/Link:</strong> 
+                        {% if "http" in app.interview_location %}
+                            <a href="{{ app.interview_location }}" target="_blank" class="text-primary text-decoration-underline">Join Meeting</a>
+                        {% else %}
+                            <span class="text-dark">{{ app.interview_location }}</span>
+                        {% endif %}
+                    </div>
+                {% endif %}
             </div>
         {% endif %}
     </div>
 
-    <!-- Bottom Row: Full-width Stepper -->
+    <!-- Notification Message from Company (Remarks) -->
+    {% if app.remarks %}
+        <div class="alert alert-info py-2 px-3 mb-3" style="font-size: 0.85rem; border-left: 4px solid #0dcaf0;">
+            <strong>Notification:</strong> {{ app.remarks }}
+        </div>
+    {% endif %}
+
+    <!-- Bottom Row: Stepper Tracker -->
     <div class="stepper-wrap px-3">
         {% if app.status == 'REJECTED' %}
             <span class="status-pill rejected">Rejected</span>

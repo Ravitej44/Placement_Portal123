@@ -7,6 +7,18 @@
         <p class="text-muted mb-3" style="font-size:0.9rem;">
             {{ application.student.user.get_full_name|default:application.student.user.username }} — {{ application.company.name }}
         </p>
+
+        <!-- Quick Notification Buttons -->
+        <div class="mb-3 p-3 bg-light rounded border">
+            <label class="form-label fw-bold d-block mb-2" style="font-size:0.85rem;">Quick Notification Templates:</label>
+            <div class="d-flex flex-wrap gap-2">
+                <button type="button" class="btn btn-outline-primary btn-sm" onclick="applyNotification('shortlisted')">Shortlisted</button>
+                <button type="button" class="btn btn-outline-info btn-sm" onclick="applyNotification('interview')">Interview Call</button>
+                <button type="button" class="btn btn-outline-success btn-sm" onclick="applyNotification('selected')">Selection</button>
+                <button type="button" class="btn btn-outline-danger btn-sm" onclick="applyNotification('rejected')">Rejection</button>
+            </div>
+        </div>
+
         <form method="post" class="ps-form">
           {% csrf_token %}
           {{ form.as_p }}
@@ -16,4 +28,23 @@
     </div>
   </div>
 </div>
+
+<script>
+function applyNotification(type) {
+    const remarksField = document.querySelector('textarea[name="remarks"]');
+    const companyName = "{{ application.company.name|escapejs }}";
+    
+    if (!remarksField) return;
+
+    if (type === 'shortlisted') {
+        remarksField.value = `Congratulations! You have been shortlisted for the next rounds at ${companyName}. Please stay tuned for interview updates.`;
+    } else if (type === 'interview') {
+        remarksField.value = `You have been scheduled for an interview with ${companyName}. Please check your scheduled interview date, time, and venue details below.`;
+    } else if (type === 'selected') {
+        remarksField.value = `Congratulations! We are pleased to inform you that you have been selected for the position at ${companyName}.`;
+    } else if (type === 'rejected') {
+        remarksField.value = `Thank you for participating in ${companyName}'s hiring drive. We regret to inform you that we will not be moving forward with your application.`;
+    }
+}
+</script>
 {% endblock %}
